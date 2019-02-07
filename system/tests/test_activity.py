@@ -10,37 +10,85 @@ class test_activity(TestCase):
         app.config['DEBUG'] = True
         return app
 
-    def test_1a_post_activity_correct_request(self):
+    def test_1a_post_activity_correct_request_post(self):
         response = self.client.post(
                                     '/activity',
                                     data=json.dumps({
                                         "actor":"ivan",
                                         "verb":"post",
-                                        "object":"photo:2",
-                                        "target":"eric"
+                                        "object":"photo:2"
                                     }),
                                     headers={"X-App-Key": "abc123"},
                                     content_type='application/json'
                                 )
 
         self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json['verb'], 'post')
         self.assertEqual(response.json['message'], 'Activity recorded')
 
-    def test_1b_post_activity_correct_request(self):
+    def test_1b_post_activity_correct_request_post(self):
+        response = self.client.post(
+                                    '/activity',
+                                    data=json.dumps({
+                                        "actor":"nico",
+                                        "verb":"post",
+                                        "object":"photo:3"
+                                    }),
+                                    headers={"X-App-Key": "abc124"},
+                                    content_type='application/json'
+                                )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json['verb'], 'post')
+        self.assertEqual(response.json['message'], 'Activity recorded')
+
+    def test_1c_post_activity_correct_request_ignore_target(self):
+        response = self.client.post(
+                                    '/activity',
+                                    data=json.dumps({
+                                        "actor":"nico",
+                                        "verb":"post",
+                                        "object":"photo:4",
+                                        "target":"ivan"
+                                    }),
+                                    headers={"X-App-Key": "abc124"},
+                                    content_type='application/json'
+                                )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json['verb'], 'post')
+        self.assertEqual(response.json['message'], 'Activity recorded')
+
+    def test_1d_post_activity_correct_request_follow(self):
+        response = self.client.post(
+                                    '/activity',
+                                    data=json.dumps({
+                                        "actor":"nico",
+                                        "verb":"follow",
+                                        "target":"ivan"
+                                    }),
+                                    headers={"X-App-Key": "abc124"},
+                                    content_type='application/json'
+                                )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json['verb'], 'follow')
+        self.assertEqual(response.json['message'], 'Activity recorded')
+
+    def test_2a_post_activity_wrong_object_format(self):
         response = self.client.post(
                                     '/activity',
                                     data=json.dumps({
                                         "actor":"ivan",
                                         "verb":"post",
-                                        "object":"photo:2",
-                                        "target":"eric"
+                                        "object":"photo:x"
                                     }),
                                     headers={"X-App-Key": "abc123"},
                                     content_type='application/json'
                                 )
 
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.json['message'], 'Activity recorded')
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(response.json['message'], 'Wrong object format')
 
     # Cover : valid_json@headers.py
     def test_2a_post_activity_request_is_not_json(self):
@@ -117,8 +165,7 @@ class test_activity(TestCase):
                                     '/activity',
                                     data=json.dumps({
                                         "actor":"ivan",
-                                        "verb":"post",
-                                        "object":"post:1",
+                                        "verb":"follow",
                                         "target":"dadang"
                                     }),
                                     headers={"X-App-Key": "abc123"},
@@ -128,7 +175,6 @@ class test_activity(TestCase):
         self.assertEqual(response.status_code, 400)
         self.assertEqual(response.json['error'], True)
         self.assertEqual(response.json['message'], 'Target is not found')
-
 
 
 if __name__ == '__main__':
