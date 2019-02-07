@@ -1,0 +1,12 @@
+*.pyc
+__pycache__/
+__pycache__/*
+.idea/
+.vscode/
+env/*
+env/
+*/cover/*
+flask.log
+.coverage
+.flaskenv
+database.yml
