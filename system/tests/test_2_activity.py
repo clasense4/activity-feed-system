@@ -25,6 +25,9 @@ class test_2_activity(TestCase):
         self.assertEqual(response.json['verb'], 'like')
         self.assertEqual(response.json['message'], 'Activity recorded')
 
+    """
+    TODO : User can like his own post multiple times, should be only once
+    """
     def test_1b_post_activity_correct_like(self):
         response = self.client.post(
                                     '/activity',
@@ -39,6 +42,22 @@ class test_2_activity(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.json['verb'], 'like')
         self.assertEqual(response.json['message'], 'Activity recorded')
+
+    def test_1c_post_activity_correct_share(self):
+        response = self.client.post(
+                                    '/activity',
+                                    data=json.dumps({
+                                        "verb":"share",
+                                        "object": "post:1"
+                                    }),
+                                    headers={"X-App-Key": "abc123"},
+                                    content_type='application/json'
+                                )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json['verb'], 'share')
+        self.assertEqual(response.json['message'], 'Activity recorded')
+
 
     # Cover : valid_json@headers.py
     def test_2a_post_activity_request_is_not_json(self):
