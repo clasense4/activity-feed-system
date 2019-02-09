@@ -13,5 +13,5 @@ app.add_url_rule('/follow', methods=['POST'], view_func=follow.follow)
 post = post_controller.controller()
 app.add_url_rule('/post', methods=['POST'], view_func=post.post)
 
-if __name__ == "__main__":
+if __name__ == "__main__": # pragma: no cover
     app.run(port=5000, debug=True, host='0.0.0.0')
