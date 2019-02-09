@@ -1,0 +1,10 @@
+databases:
+    development:
+        driver: pgsql
+        host: localhost
+        database: activity_feed_system
+        user: postgres
+        port: 5433
+        password: ''
+        prefix: ''
+        use_qmark: true
