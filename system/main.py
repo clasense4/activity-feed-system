@@ -1,5 +1,5 @@
 from config.bootstrap import app
-from controllers import me_controller, activity_controller, follow_controller, post_controller, feed_controller
+from controllers import me_controller, activity_controller, follow_controller, post_controller, feed_controller, unfollow_controller
 
 me = me_controller.controller()
 app.add_url_rule('/me', methods=['GET'], view_func=me.me)
@@ -9,6 +9,9 @@ app.add_url_rule('/activity', methods=['POST'], view_func=activity.activity)
 
 follow = follow_controller.controller()
 app.add_url_rule('/follow', methods=['POST'], view_func=follow.follow)
+
+unfollow = unfollow_controller.controller()
+app.add_url_rule('/unfollow', methods=['POST'], view_func=unfollow.unfollow)
 
 post = post_controller.controller()
 app.add_url_rule('/post', methods=['POST'], view_func=post.post)
