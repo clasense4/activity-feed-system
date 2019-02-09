@@ -1,7 +1,6 @@
 from flask_testing import TestCase
 import unittest
 from main import app as flask_app
-# from nose.tools import set_trace
 import json
 
 class test_0_me(TestCase):
