@@ -12,5 +12,5 @@ class DatabaseSeeder(Seeder):
         """
         self.call(users_table_seeder.UsersTableSeeder)
         self.call(posts_table_seeder.PostsTableSeeder)
-        self.call(activities_table_seeder.ActivitiesTableSeeder)
+        # self.call(activities_table_seeder.ActivitiesTableSeeder)
 
