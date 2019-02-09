@@ -35,11 +35,47 @@ class controller(base_controller.controller):
                 }
                 return content, 400
 
-            # Validation for like
-            if verb in ['like', 'share']:
-                # Must have object and make sure it is valid
-                # Must have target
-                pass
+            # Check object format
+            object_params = self.valid_object_format(request)
+            if object_params == False:
+                content = {
+                    "error": True,
+                    "message": "Wrong object format"
+                }
+                return content, 400
+
+            # Check object is exists
+            post_verb_table_mapping = {
+                'post': 'posts',
+                'photo': 'photos'
+            }
+            post_object = db.table(post_verb_table_mapping[object_params['object_type']]).where({
+                'id': object_params['object_id']
+            }).first()
+
+            if post_object is None:
+                content = {
+                    "error": True,
+                    "message": "Object is not found"
+                }
+                return content, 400
+
+            # Get target
+            target = db.table('users').where({
+                'id': post_object['user_id']
+            }).first()
+
+            # Write to activity table
+            activity_params = self.merge_two_dicts(params, object_params)
+            activity_params['target_id'] = target['id']
+            activity_params['target_name'] = target['name']
+            db.table('activities').insert(activity_params)
+
+            content = {
+                "verb": verb,
+                "message": "Activity recorded"
+            }
+            return content, 200
 
         except Exception as e:
             app.logger.error(e)

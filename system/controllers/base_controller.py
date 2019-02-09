@@ -25,21 +25,6 @@ class controller:
             app.logger.error(e)
             return False
 
-    def valid_target(self, request):
-        try:
-            target_name = request.json['target']
-            target_user = db.table('users').where('name', target_name).first()
-            if target_user is None:
-                raise Exception
-
-            params = {}
-            params['target_id'] = target_user['id']
-            params['target_name'] = target_user['name']
-            return params
-        except Exception as e:
-            app.logger.error(e)
-            return False
-
     def valid_user(self, user_name):
         try:
             user = db.table('users').where('name', user_name).first()
