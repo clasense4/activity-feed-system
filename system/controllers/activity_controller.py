@@ -73,25 +73,6 @@ class controller(base_controller.controller):
                 }
                 return content, 200
 
-            if verb == 'follow':
-                # Must have target
-                target_params = self.valid_target(request)
-                if target_params == False:
-                    content = {
-                        "error": True,
-                        "message": "Target is not found"
-                    }
-                    return content, 400
-
-                activity_params = self.merge_two_dicts(params, target_params)
-                db.table('activities').insert(activity_params)
-
-                content = {
-                    "verb": verb,
-                    "message": "Activity recorded"
-                }
-                return content, 200
-
             # Validation for like
             if verb in ['like', 'share']:
                 # Must have object and make sure it is valid

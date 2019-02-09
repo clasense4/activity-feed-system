@@ -59,22 +59,6 @@ class test_activity(TestCase):
         self.assertEqual(response.json['verb'], 'post')
         self.assertEqual(response.json['message'], 'Activity recorded')
 
-    def test_1d_post_activity_correct_request_follow(self):
-        response = self.client.post(
-                                    '/activity',
-                                    data=json.dumps({
-                                        "actor":"nico",
-                                        "verb":"follow",
-                                        "target":"ivan"
-                                    }),
-                                    headers={"X-App-Key": "abc124"},
-                                    content_type='application/json'
-                                )
-
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.json['verb'], 'follow')
-        self.assertEqual(response.json['message'], 'Activity recorded')
-
     def test_2a_post_activity_wrong_object_format(self):
         response = self.client.post(
                                     '/activity',
@@ -159,22 +143,6 @@ class test_activity(TestCase):
         self.assertEqual(response.status_code, 400)
         self.assertEqual(response.json['error'], True)
         self.assertEqual(response.json['message'], 'Wrong object format')
-
-    def test_5_post_activity_target_is_not_found(self):
-        response = self.client.post(
-                                    '/activity',
-                                    data=json.dumps({
-                                        "actor":"ivan",
-                                        "verb":"follow",
-                                        "target":"dadang"
-                                    }),
-                                    headers={"X-App-Key": "abc123"},
-                                    content_type='application/json'
-                                )
-
-        self.assertEqual(response.status_code, 400)
-        self.assertEqual(response.json['error'], True)
-        self.assertEqual(response.json['message'], 'Target is not found')
 
 
 if __name__ == '__main__':
