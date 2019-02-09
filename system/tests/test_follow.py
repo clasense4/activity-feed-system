@@ -66,3 +66,6 @@ class test_follow(TestCase):
         self.assertEqual(response.status_code, 400)
         self.assertEqual(response.json['error'], True)
         self.assertEqual(response.json['message'], 'You can\'t follow yourself')
+
+if __name__ == '__main__':
+    unittest.main()
