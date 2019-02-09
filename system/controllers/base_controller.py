@@ -22,6 +22,7 @@ class controller:
             params['object_type'] = object_name
             return params
         except Exception as e:
+            app.logger.error(e)
             return False
 
     def valid_target(self, request):
@@ -36,8 +37,19 @@ class controller:
             params['target_name'] = target_user['name']
             return params
         except Exception as e:
+            app.logger.error(e)
             return False
 
+    def valid_user(self, user_name):
+        try:
+            user = db.table('users').where('name', user_name).first()
+            if user is None:
+                raise Exception
+
+            return user
+        except Exception as e:
+            app.logger.error(e)
+            return False
 
     def merge_two_dicts(self, x, y):
         z = x.copy()   # start with x's keys and values
