@@ -29,4 +29,7 @@ class test_4_feed(TestCase):
                                 )
 
         self.assertEqual(response.status_code, 200)
-        # self.assertEqual(len(response.json['my_feed']), 6)
+        self.assertEqual(len(response.json['friends_feed']), 0)
+
+if __name__ == '__main__':
+    unittest.main()
