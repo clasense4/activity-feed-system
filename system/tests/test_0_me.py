@@ -4,7 +4,7 @@ from main import app as flask_app
 # from nose.tools import set_trace
 import json
 
-class test_me(TestCase):
+class test_0_me(TestCase):
     def create_app(self):
         app = flask_app
         app.config['TESTING'] = True

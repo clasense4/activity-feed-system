@@ -3,7 +3,7 @@ import unittest
 from main import app as flask_app
 import json
 
-class test_follow(TestCase):
+class test_3_follow(TestCase):
     def create_app(self):
         app = flask_app
         app.config['TESTING'] = True
