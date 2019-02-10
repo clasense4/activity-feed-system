@@ -1,0 +1,21 @@
+version: '3'
+services:
+  web:
+    build: .
+    command: gunicorn -b 0.0.0.0:5000 main:app
+    depends_on:
+      - timescale
+    volumes:
+      - .:/usr/src/app
+    ports:
+      - "5000:5000"
+  timescale:
+    image: timescale/timescaledb:latest-pg11
+    volumes:
+      - ./data:/var/lib/postgresql/data
+    ports:
+      - 5433:5432
+    environment:
+      POSTGRES_USER: fajri
+      POSTGRES_PASSWORD: 123
+      POSTGRES_DB: activity_feed_system

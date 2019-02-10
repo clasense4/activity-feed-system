@@ -1,0 +1,10 @@
+databases:
+    development:
+        driver: pgsql
+        host: timescale
+        database: activity_feed_system
+        user: fajri
+        port: 5432
+        password: '123'
+        prefix: ''
+        use_qmark: true
