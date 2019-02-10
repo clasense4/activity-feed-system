@@ -13,7 +13,9 @@ class controller(base_controller.controller):
             token = request.headers['X-App-Key']
             current_user = db.table('users').where('auth_token', token).first()
 
-            my_feed = db.table('activities').where({
+            my_feed = db.table('activities').select(
+                'actor_name', 'verb', 'object_id', 'object_type', 'target_name', 'time'
+            ).where({
                 'actor_id': current_user['id']
             }).order_by('time', 'desc').get().to_json()
 
@@ -39,7 +41,7 @@ class controller(base_controller.controller):
 
             friends_feed = db.select(
                 """
-                select * from activities where actor_id in (
+                select actor_name, verb, object_id, object_type, target_name, time from activities where actor_id in (
                     SELECT  unnest(follow_ids) from users WHERE id = ?
                 )
                 """,
