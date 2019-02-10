@@ -109,7 +109,7 @@ class test_2_activity(TestCase):
 
         self.assertEqual(response.status_code, 400)
         self.assertEqual(response.json['error'], True)
-        self.assertEqual(response.json['message'], 'Wrong verb format')
+        self.assertEqual(response.json['message'], 'Verb is missing or wrong verb format')
 
     def test_2d_post_activity_wrong_object_format(self):
         response = self.client.post(

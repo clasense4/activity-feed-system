@@ -25,13 +25,15 @@ class controller(base_controller.controller):
             # Validate verb (like, post, share)
             #   "verb":"like"
             valid_verb = ['like', 'share']
-            verb = request.json['verb']
-            if str.lower(verb) in valid_verb:
-                params['verb'] = verb
-            else:
+            try:
+                params['verb'] = request.json['verb']
+                if request.json['verb'] not in valid_verb:
+                    raise Exception
+
+            except Exception as e:
                 content = {
                     "error": True,
-                    "message": "Wrong verb format"
+                    "message": "Verb is missing or wrong verb format"
                 }
                 return content, 400
 
@@ -72,7 +74,7 @@ class controller(base_controller.controller):
             db.table('activities').insert(activity_params)
 
             content = {
-                "verb": verb,
+                "verb": params['verb'],
                 "message": "Activity recorded"
             }
             return content, 200
