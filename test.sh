@@ -1,10 +1,9 @@
-orator migrate -c config/database.yml --force
-orator migrate:refresh -c config/database.yml --force --seed
-rm -rf cover
-rm -rf .coverage
-nosetests tests/basic/test_* --with-coverage --cover-package=main,decorators,controllers --logging-level=DEBUG --no-byte-compile --cover-html -s
+docker exec -it activity_web_1 cat test_basic.sh
+docker exec -it activity_web_1 sh test_basic.sh
+docker cp activity_web_1:/usr/src/app/cover ./cover_basic
 
-orator migrate:refresh -c config/database.yml --force --seed
-rm -rf cover
-rm -rf .coverage
-nosetests tests/advance/test_* --with-coverage --cover-package=main,decorators,controllers --logging-level=DEBUG --no-byte-compile --cover-html -s
+docker exec -it activity_web_1 cat test_advance.sh
+docker exec -it activity_web_1 sh test_advance.sh
+docker cp activity_web_1:/usr/src/app/cover ./cover_advance
+
+ls -ahl | grep cover
