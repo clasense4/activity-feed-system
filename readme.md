@@ -14,6 +14,9 @@ For any social network, activity feed is a common feature that usually starts of
 ## Installation
 
 ```
+cd ~
+git clone https://github.com/clasense4/activity-feed-system.git
+cd activity-feed-system
 docker-compose up -d
 sh test.sh
 # And wait for complete
