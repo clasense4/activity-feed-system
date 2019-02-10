@@ -5,7 +5,7 @@ __pycache__/*
 .vscode/
 env/*
 env/
-*/cover/*
+cover/*
 flask.log
 .coverage
 .flaskenv
