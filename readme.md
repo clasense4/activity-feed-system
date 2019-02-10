@@ -253,13 +253,53 @@ curl -X POST \
 
 ## FAQ
 
-## API
+## API & Application
 
 ### 1. Why separating `post` and `follow` from endpoints /activity ?
 
+Previously I made `/activity` endpoint to support 4 type of verbs : post, follow, like, share. Then I realize, if I want to use `verb:post` I need to know the `object_id` and made validation if for the object. So instead, I'm creating `/post` endpoint, with return created `object_id`.
+
+As for `verb:follow`, writing to table `activities` is already taken care by `/follow` endpoints.
+
+### 2. Which web framework you choose and why?
+
+I use flask, it is simple and easy. If in next time flask is slowing, we can port this flask application to python3 async web framework, for example [sanic](https://github.com/huge-success/sanic) and [quart](https://gitlab.com/pgjones/quart). Of course the postgresql drive need to be changed to [aysncpg](https://magic.io/blog/asyncpg-1m-rows-from-postgres-to-python/).
+
+### 3. Why are you using orator query builder instead of sqlalchemy core?
+
+I tried sqlalchemy core, and it is harder than orator. Orator orm is similar with most of active record implementation like in php and ruby.
+
 ## Architecture
 
-### 1. Why timescaledb?
+### 1. Why [timescaledb](https://www.timescale.com/)?
 
+Timescaledb is a timeseries database, with fast ingest, and fast read especially specific data that related to time. Actually only table `activities` that can take advantage from timescale. So, for another table, it can be store at regular postgresql databases.
 
-## Todo
+### 2. Are you not using any queue like celery or sqs?
+
+I should use queue, especially when writing to table `activities`. But our activities table is in format time series and timescaledb is good at that. I think we can test its fast ingest as they advertised.
+
+### 3. What is your plan on production?
+
+Thanks to docker, we can host the web app using [ECS](https://aws.amazon.com/ecs/) or [EKS](https://aws.amazon.com/eks/). Or if there is too much differences on container, we can host it on elastic beanstalk, and create a custom platform using packer. 
+
+Timescaledb v1.2 has new support, they provide [timescaledb ami](https://docs.timescale.com/v1.2/getting-started/installation/ami/installation-ubuntu-ami). But still need some improvement on postgre config.
+
+## Improvement
+
+### 1. Add a simple fake data generator.
+
+The data that we working on should be very high, and it is needed.
+
+### 2. Add load testing tools like : [locust](https://locust.io/).
+
+This architecture is not proven yet until we attack our architecture. When we have baseline number, we can have a comparison.
+
+### 3. Add Redis.
+
+This part is still missing for now. Redis can be use for validation. For example, on `/follow` endpoints, instead of using query to check user is exists, we can use combination of [redis command](https://redis.io/commands#set) : `SADD` & `SISMEMBER` which given O(1) complexity.
+
+And another example, on `/feed/my` or `/feed/friends` we can cache the query result via redis, and invalidate it for 30 seconds (or lower). Depends on our case, performance vs data validity.
+
+Previously I have a plan to use [redis stream](https://redis.io/topics/streams-intro), but I have no proven experience for this new command and as I realized, this case is need at least warm data, so timescale (or RDBMS) is good choice.
+
