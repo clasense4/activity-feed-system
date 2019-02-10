@@ -10,3 +10,7 @@ cover/*
 flask.log
 .coverage
 database.yml
+cover_*/
+cover_*/*
+pg_data/
+pg_data/*

@@ -12,7 +12,7 @@ services:
   timescale:
     image: timescale/timescaledb:latest-pg11
     volumes:
-      - ./data:/var/lib/postgresql/data
+      - ./pg_data:/var/lib/postgresql/data
     ports:
       - 5433:5432
     environment:
