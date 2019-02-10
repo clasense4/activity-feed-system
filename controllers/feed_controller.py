@@ -43,10 +43,13 @@ class controller(base_controller.controller):
                 """
                 select actor_name, verb, object_id, object_type, target_name, time from activities where actor_id in (
                     SELECT  unnest(follow_ids) from users WHERE id = ?
-                )
+                ) order by time desc
                 """,
                 [current_user['id']]
             )
+
+            if len(friends_feed) > 0:
+                friends_feed = [ dict(friend_feed) for friend_feed in friends_feed ]
 
             content = {
                 "friends_feed": friends_feed,
