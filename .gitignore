@@ -3,10 +3,10 @@ __pycache__/
 __pycache__/*
 .idea/
 .vscode/
-env/*
 env/
+env/*
+cover/
 cover/*
 flask.log
 .coverage
-.flaskenv
 database.yml
