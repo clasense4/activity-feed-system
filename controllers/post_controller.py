@@ -67,6 +67,7 @@ class controller(base_controller.controller):
 
             content = {
                 "type": request.json['type'],
+                "object_id": post_object_id,
                 "message": "Activity recorded"
             }
             return content, 200
