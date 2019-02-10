@@ -14,7 +14,8 @@ For any social network, activity feed is a common feature that usually starts of
 ## Installation
 
 ```
-docker-compose up
+docker-compose up -d
+sh test.sh
 # And wait for complete
 curl -X GET http://localhost:5000/me -H 'X-App-Key: abc123'
 
