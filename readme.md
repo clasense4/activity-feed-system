@@ -18,6 +18,7 @@ cd ~
 git clone https://github.com/clasense4/activity-feed-system.git
 cd activity-feed-system
 docker-compose up -d
+# Or remove `-d`
 sh test.sh
 # And wait for complete
 curl -X GET http://localhost:5000/me -H 'X-App-Key: abc123'
