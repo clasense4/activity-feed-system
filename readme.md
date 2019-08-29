@@ -9,7 +9,7 @@ For any social network, activity feed is a common feature that usually starts of
 - docker
 - docker-compose
 - Python 3
-- Timescaledb
+- TimescaleDB
 
 ## Installation
 
